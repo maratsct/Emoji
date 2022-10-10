@@ -1,0 +1,57 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+def getVersionName = { ->
+    return "1.0.0"
+}
+
+def getArtifactId = { ->
+    return "emojiKit"
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.emojiKit'
+                artifactId = getArtifactId()
+                version = getVersionName()
+
+                artifact sourceJar
+            }
+        }
+    }
+}
+
+
+android {
+    compileSdkVersion compile_sdk_version
+
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation supportDependencies.appCompat
+    implementation supportDependencies.recyclerView
+    implementation supportDependencies.cardView
+}
+
