@@ -39,6 +39,7 @@ import com.emojiview.emojiview.listener.EditTextInputListener;
 import com.emojiview.emojiview.listener.EmojiVariantCreatorListener;
 import com.emojiview.emojiview.listener.StickerViewCreatorListener;
 import com.emojiview.emojiview.preset.AXPresetEmojiLoader;
+import com.emojiview.emojiview.provider.AXGoogleEmojiProvider;
 import com.emojiview.emojiview.shared.RecentEmoji;
 import com.emojiview.emojiview.shared.RecentEmojiManager;
 import com.emojiview.emojiview.shared.VariantEmoji;
@@ -169,10 +170,9 @@ public class AXEmojiManager {
 
     /**
      * Installs the given EmojiProvider.
-     *
-     * @param provider the provider that should be installed.
      */
-    public static void install(Context context, final EmojiProvider provider) {
+    public static void install(Context context) {
+        EmojiProvider provider = new AXGoogleEmojiProvider(context);
         AXEmojiManager.context = context.getApplicationContext();
         if (INSTANCE != null) destroy();
         INSTANCE = null;
@@ -189,7 +189,7 @@ public class AXEmojiManager {
         setMaxStickerRecentSize(Utils.getStickerGridCount(context) * 3);
         INSTANCE2.categories = provider.getCategories();
         INSTANCE2.emojiMap.clear();
-        INSTANCE2.emojiReplacer = provider instanceof EmojiReplacer ? (EmojiReplacer) provider : DEFAULT_EMOJI_REPLACER;
+        INSTANCE2.emojiReplacer = (EmojiReplacer) provider;
         if (inputListener == null) inputListener = defaultInputListener;
         if (stickerViewCreatorListener == null) stickerViewCreatorListener = defaultStickerCreator;
         if (emojiVariantCreatorListener == null) enableTouchEmojiVariantPopup();

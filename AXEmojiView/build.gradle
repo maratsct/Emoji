@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 def getVersionName = { ->
-    return "1.0.1"
+    return "1.0.0"
 }
 
 def getArtifactId = { ->
@@ -27,8 +27,6 @@ afterEvaluate {
                 artifact sourceJar
             }
         }
-
-
     }
 }
 
@@ -55,6 +53,6 @@ dependencies {
     implementation supportDependencies.appCompat
     implementation supportDependencies.recyclerView
     implementation supportDependencies.cardView
-    api supportDependencies.axEmoji
+    implementation supportDependencies.axEmoji
 }
 
